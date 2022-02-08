@@ -1,4 +1,4 @@
-package com.example.simplechat;
+package com.example.simpletodo;
 
 import org.junit.Test;
 
