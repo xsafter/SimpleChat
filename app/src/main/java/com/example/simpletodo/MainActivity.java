@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
 
 import java.util.Date;
 
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void listenChanges(String request){
-        //TODO
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://chat-app-5b288-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference reference = new database.getReference(request);
     }
     @Deprecated
     private void dbRequest(String Reference, String request){
