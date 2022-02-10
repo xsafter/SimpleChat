@@ -1,5 +1,6 @@
 package com.example.simpletodo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(view -> dbRequest());
         dbLog("Debug", "App is ready");
+        listenChanges("");
     }
 
     protected void dbLog(String tag, String message){
@@ -40,8 +42,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void listenChanges(String request){
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://chat-app-5b288-default-rtdb.europe-west1.firebasedatabase.app");
-        DatabaseReference reference = new database.getReference(request);
+        FirebaseDatabase listenDatabase = FirebaseDatabase.getInstance("https://chat-app-5b288-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference reference = listenDatabase.getReference(request);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dbLog("Data Changed", snapshot.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                dbLog("DB Error!", getColoredSpanned(error.getMessage(), "#cc0000"));
+            }
+        });
     }
     @Deprecated
     private void dbRequest(String Reference, String request){
