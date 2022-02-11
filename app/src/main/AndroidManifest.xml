@@ -20,7 +20,7 @@
             android:exported="false"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".activity_login"
+            android:name=".auth.activity_login"
             android:exported="false"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.SimpleTODO.NoActionBar" />
