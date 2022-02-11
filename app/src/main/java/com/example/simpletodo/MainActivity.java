@@ -1,33 +1,41 @@
 package com.example.simpletodo;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.*;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textview_log; Button button;
-    EditText requestHeader; EditText requestMessage;
+    TextView textview_log;
+    Button requestButton;
+    EditText requestHeader;
+    EditText requestMessage;
+    Button deleteButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         linkViews();
+        textview_log.setMovementMethod(new ScrollingMovementMethod());
 
-        button.setOnClickListener(view -> dbRequest());
+        requestButton.setOnClickListener(view -> dbRequest());
+        deleteButton.setOnClickListener(view -> delete());
         dbLog("Debug", "App is ready");
         listenChanges("");
     }
@@ -63,9 +71,10 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("debug/debug");
         myRef.setValue(request);}
 
-    private void dbRequest(){
-        if (requestMessage.getText().toString().isEmpty()){
-            Toast.makeText(this, "Request message is empty!", Toast.LENGTH_LONG);return;
+    private void dbRequest() {
+        if (requestHeader.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Request message is empty!", Toast.LENGTH_LONG).show();
+            return;
         }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(requestHeader.getText().toString());
@@ -78,18 +87,29 @@ public class MainActivity extends AppCompatActivity {
                         requestMessage.getText().toString()
         );
         myRef.setValue(requestMessage.getText().toString())
-                .addOnSuccessListener(unused -> { dbLog("Request", "<font color=#32CD32> Sent successfully!  </font>");
-                });
+                .addOnSuccessListener(unused -> dbLog("Request", "<font color=#32CD32> Sent successfully!  </font>"));
     }
 
+    private void delete() {
+        if (requestHeader.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Request message is empty!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        FirebaseDatabase.getInstance("https://chat-app-5b288-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference(requestHeader.getText().toString())
+                .removeValue()
+                .addOnSuccessListener(unused -> dbLog("Delete", "Value removed successfully "));
+    }
 
-
-    private void linkViews(){
+    private void linkViews() {
         textview_log = findViewById(R.id.LogTextView);
-        button = findViewById(R.id.button);
+        requestButton = findViewById(R.id.RequestButton);
+        deleteButton = findViewById(R.id.deleteButton);
         requestHeader = findViewById(R.id.requestHeader);
         requestMessage = findViewById(R.id.requestMessage);
     }
 
-    private String getColoredSpanned(String text, String color) { return "<font color=" + color + ">" + text + "</font>"; }
+    private String getColoredSpanned(String text, String color) {
+        return "<font color=" + color + ">" + text + "</font>";
+    }
 }
