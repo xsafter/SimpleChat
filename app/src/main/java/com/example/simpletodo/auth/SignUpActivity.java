@@ -12,11 +12,12 @@ import com.example.simpletodo.MainActivity;
 import com.example.simpletodo.R;
 import com.example.simpletodo.services.AuthService;
 
-public class SignUp extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     Button signupButton;
     Button loginButton;
     EditText emailField;
     EditText passwordField;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,12 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         initView();
+
+        signupButton.setOnClickListener(view -> {
+            AuthService.signOut();
+            startActivity(new Intent(this, SignUpActivity.class));
+        });
+
         signupButton.setOnClickListener(view -> {
             String email = emailField.getText().toString();
             String password = passwordField.getText().toString();
@@ -31,21 +38,23 @@ public class SignUp extends AppCompatActivity {
 
             if (email.isEmpty()) {
                 emailField.setError("Email is empty");
-                toast("Email is empty");
+//                toast("Email is empty");
                 return;
             }
             if (!(email.contains("@") || email.contains(".") || email.length() > 3)) {
                 emailField.setError("Email is not valid");
-                toast("Email is not valid");
+//                toast("Email is not valid");
                 return;
             }
 
             if (password.isEmpty()) {
-                toast("Password is empty");
+                passwordField.setError("Password is empty");
+//                toast("Password is empty");
                 return;
             }
             if (password.length() < 6) {
-                toast("Password is too weak");
+                passwordField.setError("Password is too weak");
+//                toast("Password is too weak");
             }
 
 

@@ -9,8 +9,8 @@ public class AuthService {
         return FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password);
     }
 
-    public static void logInSilently() {
-        //TODO
+    public static boolean isLoggedIn() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
 
     public static Task<AuthResult> signUp(String email, String password) {
