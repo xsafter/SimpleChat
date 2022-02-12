@@ -1,5 +1,6 @@
 package com.example.simpletodo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -11,6 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.simpletodo.auth.LoginActivity;
+import com.example.simpletodo.auth.SignUpActivity;
+import com.example.simpletodo.services.AuthService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     EditText requestHeader;
     EditText requestMessage;
     Button deleteButton;
+    Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +43,28 @@ public class MainActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(view -> delete());
         dbLog("Debug", "App is ready");
         listenChanges("");
+        if (AuthService.isLoggedIn()) {
+            startActivity(new Intent(this, MainActivity.class));
+        } else {
+            startActivity(new Intent(this, SignUpActivity.class));
+        }
+        logoutButton.setOnClickListener(view -> {
+            AuthService.signOut();
+            startActivity(new Intent(getBaseContext(), LoginActivity.class));
+        });
+
     }
 
-    protected void dbLog(String tag, String message){
+    protected void dbLog(String tag, String message) {
         StringBuilder builder = new StringBuilder();
         builder.append(textview_log.getText().toString());
         builder.append("<br>");
-        builder.append(getColoredSpanned(new Date().toLocaleString(), "#5f2c3e") +" "+getColoredSpanned(tag, "#008080")+": <b>"+message+"</b>");
+        builder.append(getColoredSpanned(new Date().toLocaleString(), "#5f2c3e") + " " + getColoredSpanned(tag, "#008080") + ": <b>" + message + "</b>");
         builder.append("<br>");
         textview_log.setText(Html.fromHtml(builder.toString()));
     }
 
-    private void listenChanges(String request){
+    private void listenChanges(String request) {
         FirebaseDatabase listenDatabase = FirebaseDatabase.getInstance("https://chat-app-5b288-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference reference = listenDatabase.getReference(request);
 
@@ -65,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     @Deprecated
-    private void dbRequest(String Reference, String request){
+    private void dbRequest(String Reference, String request) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("debug/debug");
-        myRef.setValue(request);}
+        myRef.setValue(request);
+    }
 
     private void dbRequest() {
         if (requestHeader.getText().toString().isEmpty()) {
@@ -107,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.deleteButton);
         requestHeader = findViewById(R.id.requestHeader);
         requestMessage = findViewById(R.id.requestMessage);
+        logoutButton = findViewById(R.id.logoutButton);
     }
 
     private String getColoredSpanned(String text, String color) {
