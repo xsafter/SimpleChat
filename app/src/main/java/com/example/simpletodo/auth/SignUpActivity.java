@@ -1,5 +1,6 @@
 package com.example.simpletodo.auth;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -35,6 +36,9 @@ public class SignUpActivity extends AppCompatActivity {
             String email = emailField.getText().toString();
             String password = passwordField.getText().toString();
 
+            ProgressDialog progressDialog = showProgressDialog();
+            progressDialog.setTitle("Loading");
+            progressDialog.show();
 
             if (email.isEmpty()) {
                 emailField.setError("Email is empty");
@@ -62,18 +66,27 @@ public class SignUpActivity extends AppCompatActivity {
             {
                 startActivity(new Intent(getBaseContext(), MainActivity.class));
             })
+                    .addOnSuccessListener(authResult -> {
+                        startActivity(new Intent(getBaseContext(), MainActivity.class));
+                    })
                     .addOnFailureListener(e -> {
                         toast("Can't create user");
                         e.printStackTrace();
-                    });
+                    })
+                    .addOnCompleteListener(task -> progressDialog.dismiss());
         });
     }
 
+    ProgressDialog showProgressDialog() {
+        return new ProgressDialog(this);
+        //progressDialog.dismiss();
+    }
+
     private void initView() {
-        signupButton = findViewById(R.id.signupButton);
-        loginButton = findViewById(R.id.loginButton);
-        emailField = findViewById(R.id.emailField);
-        passwordField = findViewById(R.id.passwordField);
+        signupButton = findViewById(R.id.signupButton2);
+        loginButton = findViewById(R.id.loginButton2);
+        emailField = findViewById(R.id.emailField2);
+        passwordField = findViewById(R.id.passwordField2);
     }
 
     public void toast(String toast) {

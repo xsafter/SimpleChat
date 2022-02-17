@@ -1,6 +1,5 @@
 package com.example.simpletodo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -12,9 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.simpletodo.auth.LoginActivity;
-import com.example.simpletodo.auth.SignUpActivity;
-import com.example.simpletodo.services.AuthService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,15 +39,15 @@ public class MainActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(view -> delete());
         dbLog("Debug", "App is ready");
         listenChanges("");
-        if (AuthService.isLoggedIn()) {
-            startActivity(new Intent(this, MainActivity.class));
-        } else {
-            startActivity(new Intent(this, SignUpActivity.class));
-        }
-        logoutButton.setOnClickListener(view -> {
-            AuthService.signOut();
-            startActivity(new Intent(getBaseContext(), LoginActivity.class));
-        });
+//        if (AuthService.isLoggedIn()) {
+//            startActivity(new Intent(this, MainActivity.class));
+//        } else {
+//            startActivity(new Intent(this, SignUpActivity.class));
+//        }
+//        logoutButton.setOnClickListener(view -> {
+//            AuthService.signOut();
+//            startActivity(new Intent(getBaseContext(), LoginActivity.class));
+//        });
 
     }
 
@@ -112,6 +108,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Request message is empty!", Toast.LENGTH_LONG).show();
             return;
         }
+
+        dbLog("Delete", requestHeader.getText().toString()
+                + "with value: "
+                + requestMessage.getText().toString());
+
         FirebaseDatabase.getInstance("https://chat-app-5b288-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference(requestHeader.getText().toString())
                 .removeValue()
