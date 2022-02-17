@@ -15,6 +15,7 @@ public class UserService {
         //TODO: Replace
         FirebaseDatabase.getInstance()
                 .getReference("users")
+                .push()
                 .setValue(user);
     }
 }
