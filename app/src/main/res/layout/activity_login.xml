@@ -12,7 +12,7 @@
         tools:context=".auth.SignUpActivity">
 
         <EditText
-            android:id="@+id/emailField"
+            android:id="@+id/emailField2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -27,37 +27,37 @@
             app:layout_constraintVertical_bias="0.239" />
 
         <Button
-            android:id="@+id/signupButton"
+            android:id="@+id/signupButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="304dp"
             android:text="Sign up"
-            app:layout_constraintEnd_toEndOf="@+id/passwordField"
-            app:layout_constraintStart_toStartOf="@+id/passwordField"
-            app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+            app:layout_constraintEnd_toEndOf="@+id/passwordField2"
+            app:layout_constraintStart_toStartOf="@+id/passwordField2"
+            app:layout_constraintTop_toBottomOf="@+id/passwordField2" />
 
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/loginButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="log in"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/signupButton"
+            app:layout_constraintEnd_toEndOf="@+id/signupButton2"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/signupButton"
-            app:layout_constraintTop_toBottomOf="@+id/signupButton"
+            app:layout_constraintStart_toStartOf="@+id/signupButton2"
+            app:layout_constraintTop_toBottomOf="@+id/signupButton2"
             app:layout_constraintVertical_bias="0.341" />
 
         <EditText
-            android:id="@+id/passwordField"
+            android:id="@+id/passwordField2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="password"
             android:inputType="textPassword"
             android:minHeight="48dp"
-            app:layout_constraintEnd_toEndOf="@+id/emailField"
-            app:layout_constraintStart_toStartOf="@+id/emailField"
-            app:layout_constraintTop_toBottomOf="@+id/emailField" />
+            app:layout_constraintEnd_toEndOf="@+id/emailField2"
+            app:layout_constraintStart_toStartOf="@+id/emailField2"
+            app:layout_constraintTop_toBottomOf="@+id/emailField2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
